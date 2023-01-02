@@ -1,0 +1,15 @@
+# docker-compose.yml
+version: '3.1'
+services:
+  db:
+    container_name: pq-parsekino
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: parsekino
+    volumes:
+      - ./docker/postgesql/data:/var/lib/postgresql/data
+    ports:
+      - "5430:5432"
