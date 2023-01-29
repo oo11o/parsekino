@@ -5,7 +5,9 @@ const { isEmpty } = require('lodash');
 const selector = {
     'count_movies': 'a.styles_root__o_aAP.styles_rootActive__xFaoQ > span.styles_subtitle__V93vt',
     'count_page':  'a.styles_page__zbGy7',
-    'list_movies': 'div.styles_root__ti07r'
+    'list_movies': 'div.styles_root__ti07r',
+    'image': 'div.styles_contentSlot__h_lSN img',
+    'rating': '.styles_kinopoiskValueBlock__qhRaI'
 }
 
 class Kinopoisk {
@@ -13,10 +15,6 @@ class Kinopoisk {
         this.url = '';
         this.dom = '';
         this.getHtml = getHtml;
-    }
-
-    setUrl(url) {
-        this.url = url;
     }
 
     createDOM(html) {
@@ -29,8 +27,18 @@ class Kinopoisk {
                 'status': 'error',
             }
         }
-        await this._buildDom(url)
-        return this._getListMovies();
+        this.url = url;
+        await this._buildDom()
+        const countMovie = this._getCountMovie()
+        const status = this._getCountPage()
+            ? 'ok'
+            : 'error';
+        return {
+            status: status,
+            data: this._getListMovies(),
+            countMovie: this._getCountMovie(),
+            countPage: this._getCountPage()
+        };
     }
 
     async getDataPageMovie() {
@@ -45,6 +53,7 @@ class Kinopoisk {
     async _buildDom() {
         const html = await this.getHtml(this.url);
         this.dom = new JSDOM(html);
+        return;
     }
 
     _getCountMovie() {
@@ -85,13 +94,17 @@ class Kinopoisk {
                     const pathUrl = url.split('/');
                     result.push({
                         'kinopoisk_id': parseInt(pathUrl[pathUrl.length -2]),
-                        'kinopoisk_url': url
+                        'kinopoisk_url': url,
+                        'rating':  el.querySelector(selector['rating'])
+                                        ? parseFloat(el.querySelector(selector['rating']).textContent)
+                                        : '',
+                        'image': el.querySelector(selector['image']).getAttribute('src')
                     });
                 }
             });
            return result
         } catch (e) {
-            result = false;
+           return e.message
         }
 
     }
