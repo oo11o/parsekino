@@ -1,8 +1,5 @@
-
 const { Sequelize, DataTypes } = require('sequelize');
-const connect = require('../connect.js')
-console.log(connect.options)
-return;
+const sequelize = require('../sequilize')
 
 const Year = sequelize.define('years', {
     // Model attributes are defined here
@@ -15,17 +12,17 @@ const Year = sequelize.define('years', {
     year: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true 
+      unique: true
     },
 
     count_movies: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: null
     },
 
     count_scan_movies: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: null
     },
 
     status: {
@@ -39,8 +36,8 @@ const Year = sequelize.define('years', {
     // Other model options go here
   });
 
-  (async () => {
-    await sequelize.sync({ force: true });
-  })();
+  // (async () => {
+  //   await sequelize.sync({ force: true });
+  // })();
 
   module.exports = Year
