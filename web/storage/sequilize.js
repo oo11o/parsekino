@@ -3,7 +3,6 @@ const path = require('path');
 const envPath = path.join(__dirname, '..', '.env');
 
 require('dotenv').config({ path: envPath });
-console.log('The number of PORT is:', process.env.DB_PORT);
 
 const DB_PORT = process.env.DB_PORT;
 const DB_HOST = process.env.DB_HOST;
