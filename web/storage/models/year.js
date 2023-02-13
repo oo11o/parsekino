@@ -30,14 +30,15 @@ const Year = sequelize.define('years', {
       defaultValue: 0
     },
 
+    page_scan: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1
+    },
+
     createdAt: { type: Sequelize.DATE, field: 'created_at', defaultValue: DataTypes.NOW },
-    updatedAt: { type: Sequelize.DATE, field: 'updated_at' },
+    updatedAt: { type: Sequelize.DATE, field: 'updated_at', defaultValue: sequelize.literal('CURRENT_TIMESTAMP')},
   }, {
     // Other model options go here
   });
-
-  // (async () => {
-  //   await sequelize.sync({ force: true });
-  // })();
 
   module.exports = Year
