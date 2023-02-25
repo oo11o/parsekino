@@ -27,5 +27,4 @@ const Genres = sequelize.define('genres', {
     // Other model options go here
 });
 
-
 module.exports = Genres;
